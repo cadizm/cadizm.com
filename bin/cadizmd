@@ -1,0 +1,10 @@
+#!/bin/bash
+
+cd /opt/cadizm/cadizm
+
+if [[ ! -f secrets.yml ]]; then
+    echo "[`date`] Secrets file missing, bailing" >> /opt/cadizm/var/log/error.log
+    exit 1
+fi
+
+/opt/virtualenvs/cadizm/bin/gunicorn -c gunicorn_config.py cadizm.wsgi

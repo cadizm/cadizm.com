@@ -1,0 +1,93 @@
+
+---
+
+- hosts: all
+  become: true
+  tasks:
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Copy cadizm nginx conf
+      copy:
+        src: "{{playbook_dir}}/cadizm.conf"
+        dest: /etc/nginx/sites-enabled
+      notify: Reload nginx
+
+    - name: Copy cadizm systemd conf
+      copy:
+        src: "{{playbook_dir}}/cadizm.service"
+        dest: /etc/systemd/system
+        mode: 755
+      notify:
+        - Enable cadizm service
+        - Reload cadizm service
+
+    - name: Ensure apt cache is up to date
+      apt: update_cache=yes
+
+    - name: Install packages
+      apt: name={{item}} state=latest
+      with_items:
+        - python-pip
+        - logrotate
+        - git
+        - vim
+
+    - name: Pull git repo
+      git:
+        repo: https://github.com/cadizm/cadizm.git
+        dest: /opt/cadizm
+
+    - name: Install virtualenv
+      pip:
+        name: virtualenv
+        state: latest
+
+    - name: Make cadizm virtualenv
+      shell: >
+        if [[ ! -d /opt/virtualenvs/cadizm ]]; then
+          virtualenv /opt/virtualenvs/cadizm
+        else
+          true
+        fi
+
+    - name: Install cadizm requrements
+      pip:
+        requirements: /opt/cadizm/requirements.txt
+        virtualenv: /opt/virtualenvs/cadizm
+
+    - name: Copy cadizm secrets (task)
+      command: /bin/true
+      notify: Copy cadizm secrets
+
+    - name: Copy cadizm logrotate
+      copy:
+        src: "{{playbook_dir}}/cadizm-logrotate.conf"
+        dest: /etc/logrotate.d/cadizm
+
+    - name: Set var ownership
+      file:
+        path: /opt/cadizm/var
+        owner: www-data
+        recurse: yes
+
+    - name: Restart cadizm service
+      service: name=cadizm state=restarted
+
+  handlers:
+    - name: Reload nginx
+      service: name=nginx state=reloaded
+
+    - name: Enable cadizm service
+      service: name=cadizm enabled=yes
+
+    - name: Reload cadizm service
+      command: systemctl daemon-reload
+
+    - name: Copy cadizm secrets
+      copy:
+        src: "{{playbook_dir}}/../cadizm/secrets.yml"
+        dest: /opt/cadizm/cadizm/secrets.yml

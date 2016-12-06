@@ -1,0 +1,14 @@
+
+[Unit]
+Description=cadizm daemon
+After=network.target
+
+[Service]
+PIDFile=/opt/cadizm/var/run/cadizm.pid
+ExecStart=/opt/cadizm/bin/cadizmd
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

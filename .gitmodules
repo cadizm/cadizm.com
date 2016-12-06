@@ -1,0 +1,12 @@
+[submodule "ansible-provision"]
+	path = ansible-provision
+	url = https://github.com/cadizm/ansible-provision.git
+[submodule "lib/ansibible-provision"]
+	path = lib/ansibible-provision
+	url = https://github.com/cadizm/ansible-provision.git
+[submodule "lib/ansible-provision"]
+	path = lib/ansible-provision
+	url = https://github.com/cadizm/ansible-provision.git
+[submodule "lib/cadizm.github.io"]
+	path = lib/cadizm.github.io
+	url = https://github.com/cadizm/cadizm.github.io.git

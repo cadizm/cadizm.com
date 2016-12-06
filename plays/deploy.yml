@@ -1,0 +1,26 @@
+
+---
+
+- hosts: all
+  become: true
+  tasks:
+    - name: Pull git repo
+      git:
+        repo: https://github.com/cadizm/cadizm.git
+        dest: /opt/cadizm
+
+    - name: Install cadizm requrements
+      pip:
+        requirements: /opt/cadizm/requirements.txt
+        virtualenv: /opt/virtualenvs/cadizm
+
+    - name: Copy cadizm secrets.yml
+      copy:
+        src: "{{playbook_dir}}/../cadizm/secrets.yml"
+        dest: /opt/cadizm/cadizm/secrets.yml
+
+    - name: Reload cadizm service
+      command: systemctl daemon-reload
+
+    - name: Restart cadizm service
+      service: name=cadizm state=restarted

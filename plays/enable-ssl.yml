@@ -1,0 +1,29 @@
+
+---
+
+- hosts: all
+  become: true
+  tasks:
+    - name: Copy cadizm nginx conf
+      copy:
+        src: "{{playbook_dir}}/cadizm-ssl.conf"
+        dest: /etc/nginx/sites-enabled/cadizm.conf
+      notify: Reload nginx
+
+    - name: Install letsencrypt
+      apt:
+        name: letsencrypt
+        state: latest
+
+    - name: Get ssl/tls cert
+      command: letsencrypt certonly --webroot -w /opt/cadizm/var/www/ -d cadizm.com --non-interactive --email='michael.cadiz@gmail.com' --agree-tos
+
+    - name: Add cert renewal cron
+      cron:
+        minute: 33
+        hour: 2,14
+        job: letsencrypt renew --pre-hook='service nginx stop' --post-hook='service nginx start' --agree-tos
+
+  handlers:
+    - name: Reload nginx
+      service: name=nginx state=reloaded
