@@ -1,0 +1,21 @@
+
+---
+
+- hosts: all
+  become: true
+  tasks:
+    - name: makemigrations
+      command: /opt/virtualenvs/cadizm/bin/python manage.py makemigrations
+      args:
+        chdir: /opt/cadizm/cadizm
+
+    - name: migrate
+      command: /opt/virtualenvs/cadizm/bin/python manage.py migrate
+      args:
+        chdir: /opt/cadizm/cadizm
+
+    - name: Reload cadizm service
+      command: systemctl daemon-reload
+
+    - name: Restart cadizm service
+      service: name=cadizm state=restarted

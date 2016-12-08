@@ -10,3 +10,6 @@
 [submodule "lib/cadizm.github.io"]
 	path = lib/cadizm.github.io
 	url = https://github.com/cadizm/cadizm.github.io.git
+[submodule "lib/scramble"]
+	path = lib/scramble
+	url = https://github.com/cadizm/scramble.git
