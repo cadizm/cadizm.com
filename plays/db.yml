@@ -20,8 +20,8 @@
     - name: Ensure user has access to database
       postgresql_user: db={{dbname}} name={{dbuser}} password={{POSTGRES_PASSWORD}} priv=ALL
 
-    - name: Ensure user does not have unnecessary privilege
-      postgresql_user: name={{dbuser}} role_attr_flags=NOSUPERUSER,NOCREATEDB
+    - name: Ensure user does not has superuser privileges
+      postgresql_user: name={{dbuser}} role_attr_flags=SUPERUSER,CREATEDB
 
     - name: Ensure no other user can access the database
       postgresql_privs: db={{dbname}} role=PUBLIC type=database priv=ALL state=absent
