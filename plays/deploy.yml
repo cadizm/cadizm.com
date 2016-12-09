@@ -19,6 +19,12 @@
         src: "{{playbook_dir}}/../cadizm/secrets.yml"
         dest: /opt/cadizm/cadizm/secrets.yml
 
+    - name: Set var ownership
+      file:
+        path: /opt/cadizm/var
+        owner: www-data
+        recurse: yes
+
     - name: Reload cadizm service
       command: systemctl daemon-reload
 
