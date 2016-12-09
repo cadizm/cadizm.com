@@ -86,6 +86,9 @@
     - name: Restart cadizm service
       service: name=cadizm state=restarted
 
+    - name: Restart nginx service
+      service: name=nginx state=restarted
+
   handlers:
     - name: Reload nginx
       service: name=nginx state=reloaded
