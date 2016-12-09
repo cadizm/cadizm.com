@@ -2,4 +2,4 @@
 
 cd /opt/cadizm/lib/scramble/scramble
 
-/opt/virtualenvs/scramble/bin/gunicorn -c gunicorn_config.py scramble.wsgi
+PYTHONPATH=/opt/cadizm/lib/scramble /opt/virtualenvs/scramble/bin/gunicorn -c gunicorn_config.py scramble.wsgi
