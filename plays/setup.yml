@@ -68,6 +68,19 @@
         requirements: /opt/cadizm/requirements.txt
         virtualenv: /opt/virtualenvs/cadizm
 
+    - name: Make scramble virtualenv
+      shell: >
+        if [[ ! -d /opt/virtualenvs/scramble ]]; then
+          virtualenv /opt/virtualenvs/scramble
+        else
+          true
+        fi
+
+    - name: Install scramble requrements
+      pip:
+        requirements: /opt/cadizm/lib/scramble/requirements/development.txt
+        virtualenv: /opt/virtualenvs/cadizm
+
     - name: Copy cadizm secrets (task)
       command: /bin/true
       notify: Copy cadizm secrets
@@ -85,6 +98,9 @@
 
     - name: Restart cadizm service
       service: name=cadizm state=restarted
+
+    - name: Restart scramble service
+      service: name=scramble state=restarted
 
     - name: Restart nginx service
       service: name=nginx state=restarted
