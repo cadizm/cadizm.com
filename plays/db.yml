@@ -1,0 +1,27 @@
+# Taken from: https://github.com/ansible/ansible-examples/blob/master/language_features/postgresql.yml
+
+---
+
+- hosts: all
+  become: true
+  become_user: postgres
+  gather_facts: no
+
+  vars:
+    dbname: cadizm
+    dbuser: cadizm
+
+  tasks:
+    - include_vars: "{{playbook_dir}}/../cadizm/secrets.yml"
+
+    - name: Ensure database is created
+      postgresql_db: name={{dbname}}
+
+    - name: Ensure user has access to database
+      postgresql_user: db={{dbname}} name={{dbuser}} password={{POSTGRES_PASSWORD}} priv=ALL
+
+    - name: Ensure user does not have unnecessary privilege
+      postgresql_user: name={{dbuser}} role_attr_flags=NOSUPERUSER,NOCREATEDB
+
+    - name: Ensure no other user can access the database
+      postgresql_privs: db={{dbname}} role=PUBLIC type=database priv=ALL state=absent
