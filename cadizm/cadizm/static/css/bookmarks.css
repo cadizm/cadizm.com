@@ -1,0 +1,32 @@
+
+/*
+ * https://developers.google.com/maps/documentation/javascript/tutorial
+ *
+ * Note that some CSS that works within quirks mode is not valid in standards
+ * mode. In specific, all percentage-based sizes must inherit from parent
+ * block elements, and if any of those ancestors fail to specify a size, they
+ * are assumed to be sized at 0 x 0 pixels.
+ */
+
+html, body, #map-canvas, #layout {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#overlay {
+    position: absolute;
+    margin-top: 1.5em;
+    margin-left: 4.5em;
+    z-index: 1;
+}
+
+div .container {
+    padding: 2px;
+}
+
+div .waypoint {
+    padding: 5px;
+}

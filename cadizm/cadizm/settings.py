@@ -21,6 +21,8 @@ secrets = yaml.load(open(os.path.join(BASE_DIR, 'secrets.yml')).read())
 
 SECRET_KEY = secrets['DJANGO_SECRET_KEY']
 
+GOOGLE_API_KEY = secrets['GOOGLE_API_KEY']
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cadizm.foo',
+    'django.contrib.gis',
+    'cadizm.bookmarks',
 ]
 
 MIDDLEWARE = [
@@ -68,11 +71,14 @@ WSGI_APPLICATION = 'cadizm.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'cadizm',
+        'USER': 'cadizm',
+        'PASSWORD': secrets['POSTGRES_PASSWORD'],
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -124,10 +130,10 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '%(asctime)s %(request_id)s %(module)s %(funcName)s %(lineno)s %(message)s'
+            'format': '%(asctime)s %(module)s %(funcName)s %(lineno)s %(message)s'
         },
         'simple': {
-            'format': '%(asctime)s %(request_id)s %(message)s'
+            'format': '%(asctime)s %(message)s'
         },
     },
     'handlers': {

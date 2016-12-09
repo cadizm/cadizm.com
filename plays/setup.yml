@@ -31,10 +31,20 @@
     - name: Install packages
       apt: name={{item}} state=latest
       with_items:
+        - postgresql
+        - libpq-dev
+        - python-psycopg2
+        - redis-server
         - python-pip
         - logrotate
         - git
         - vim
+        - postgis
+        - binutils
+        - libproj-dev
+        - gdal-bin
+        - libgeoip1
+        - python-gdal
 
     - name: Pull git repo
       git:
