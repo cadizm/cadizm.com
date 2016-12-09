@@ -44,7 +44,6 @@
         - libproj-dev
         - gdal-bin
         - libgeoip1
-        - python-gdal
 
     - name: Pull git repo
       git:
@@ -101,3 +100,5 @@
       copy:
         src: "{{playbook_dir}}/../cadizm/secrets.yml"
         dest: /opt/cadizm/cadizm/secrets.yml
+
+- include: db.yml
