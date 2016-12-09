@@ -78,8 +78,8 @@
 
     - name: Install scramble requrements
       pip:
-        requirements: /opt/cadizm/lib/scramble/requirements/development.txt
-        virtualenv: /opt/virtualenvs/cadizm
+        requirements: /opt/cadizm/lib/scramble/requirements/base.txt
+        virtualenv: /opt/virtualenvs/scramble
 
     - name: Copy cadizm secrets (task)
       command: /bin/true
