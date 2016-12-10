@@ -22,6 +22,18 @@
         dest: /etc/nginx/sites-enabled
       notify: Reload nginx
 
+    - name: Copy nickamores nginx conf
+      copy:
+        src: "{{playbook_dir}}/nickamores.conf"
+        dest: /etc/nginx/sites-enabled
+      notify: Reload nginx
+
+    - name: Copy sup-press nginx conf
+      copy:
+        src: "{{playbook_dir}}/sup-press.conf"
+        dest: /etc/nginx/sites-enabled
+      notify: Reload nginx
+
     - name: Copy cadizm systemd conf
       copy:
         src: "{{playbook_dir}}/cadizm.service"
