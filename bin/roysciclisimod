@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd /opt/cadizm/lib/roys-ciclisimo/roys_ciclisimo
+
+PYTHONPATH=/opt/cadizm/lib/roys-ciclisimo /opt/virtualenvs/roysciclisimo/bin/gunicorn -c gunicorn_config.py roysciclisimo.wsgi
