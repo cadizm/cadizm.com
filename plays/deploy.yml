@@ -25,8 +25,14 @@
         owner: www-data
         recurse: yes
 
-    - name: Reload cadizm service
+    - name: Reload service daemon
       command: systemctl daemon-reload
 
     - name: Restart cadizm service
       service: name=cadizm state=restarted
+
+    - name: Restart roysciclisimo service
+      service: name=roysciclisimo state=restarted
+
+    - name: Restart scramble service
+      service: name=scramble state=restarted

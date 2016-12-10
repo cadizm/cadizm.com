@@ -111,7 +111,7 @@
 
     - name: Install roysciclisimo requrements
       pip:
-        requirements: /opt/cadizm/lib/roysciclisimo/requirements/base.txt
+        requirements: /opt/cadizm/lib/roys-ciclisimo/requirements/base.txt
         virtualenv: /opt/virtualenvs/roysciclisimo
 
     - name: Install scramble requrements
