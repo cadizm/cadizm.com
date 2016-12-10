@@ -1,7 +1,6 @@
 
 from django.conf import settings
 from django.core import serializers
-#from django.core.context_processors import csrf
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect, get_list_or_404
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -31,7 +30,6 @@ def bookmarks(request):
     context = {
         'API_KEY': settings.GOOGLE_API_KEY,
     }
-#    context.update(csrf(request))
     return render(request, 'index.html', context)
 
 

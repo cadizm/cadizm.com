@@ -279,11 +279,16 @@ var Bookmarks = {
         return new google.maps.LatLng(lat, lng);
     },
 
+    /*
+     * Example format for pointWkt: "SRID=4326;POINT (-118.2594084 34.048791)"
+     */
     parseLatLngPointWkt: function(pointWkt, precision) {
-        if (!precision) {
-            precision = 6;
+        var matches = /^.*?\((.*?)\).*?$/.exec(pointWkt)
+        if (matches.length != 2) {
+            console.log("Couldn't parse point well known text");
+            return null;
         }
-        var lngLat = pointWkt.replace(/[^0-9^\.\-^\s]/g, '').trim().split(/\s+/);
+        var lngLat = matches[1].split(/\s+/);
         return { lng: Number(lngLat[0]), lat: Number(lngLat[1]) };
     }
 
