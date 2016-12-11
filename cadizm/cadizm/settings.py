@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'cadizm.bookmarks',
+    'cadizm.theta360',
 ]
 
 MIDDLEWARE = [
