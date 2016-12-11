@@ -39,6 +39,8 @@
         hour: 2,14
         job: letsencrypt renew --pre-hook='service nginx stop' --post-hook='service nginx start' --agree-tos
 
-  handlers:
     - name: Reload nginx
       service: name=nginx state=reloaded
+
+    - name: Restart nginx
+      service: name=nginx state=restarted

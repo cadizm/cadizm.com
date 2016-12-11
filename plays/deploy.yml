@@ -36,3 +36,6 @@
 
     - name: Restart scramble service
       service: name=scramble state=restarted
+
+- include: migrate.yml
+- include: enable-ssl.yml
