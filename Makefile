@@ -7,20 +7,20 @@ all:
 local_setup:
 	ansible-playbook --limit=local-cadizm plays/setup.yml
 
-local_deploy:
-	ansible-playbook --limit=local-cadizm plays/deploy.yml
-
 local_migrate:
 	ansible-playbook --limit=local-cadizm plays/migrate.yml
+
+local_deploy:
+	ansible-playbook --limit=local-cadizm plays/deploy.yml
 
 remote_setup:
 	ansible-playbook --limit=remote-cadizm --user=cadizm plays/setup.yml
 
-remote_deploy:
-	ansible-playbook --limit=remote-cadizm --user=cadizm plays/deploy.yml
-
 remote_migrate:
 	ansible-playbook --limit=remote-cadizm --user=cadizm plays/migrate.yml
+
+remote_deploy:
+	ansible-playbook --limit=remote-cadizm --user=cadizm plays/deploy.yml
 
 ## One-time targets that should only be used in production
 

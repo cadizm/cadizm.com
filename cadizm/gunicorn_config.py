@@ -17,5 +17,5 @@ capture_output = True
 user = 'www-data'
 group = 'www-data'
 
-accesslog = '/opt/cadizm/var/log/access.log'
-errorlog = '/opt/cadizm/var/log/error.log'
+accesslog = '/opt/cadizm/var/log/cadizm-access.log'
+errorlog = '/opt/cadizm/var/log/cadizm-error.log'
