@@ -16,3 +16,6 @@
 [submodule "lib/roys-ciclisimo"]
 	path = lib/roys-ciclisimo
 	url = https://github.com/cadizm/roys-ciclisimo.git
+[submodule "lib/vrview"]
+	path = lib/vrview
+	url = https://github.com/googlevr/vrview.git
