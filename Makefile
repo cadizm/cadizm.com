@@ -19,8 +19,11 @@ remote_setup:
 remote_migrate:
 	ansible-playbook --limit=remote-cadizm --user=cadizm plays/migrate.yml
 
-remote_deploy:
+_remote_deploy:
 	ansible-playbook --limit=remote-cadizm --user=cadizm plays/deploy.yml
+
+remote_deploy: _remote_deploy remote_letsencrypt
+	;
 
 ## One-time targets that should only be used in production
 
