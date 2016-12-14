@@ -23,7 +23,7 @@ _remote_deploy:
 	ansible-playbook --limit=remote-cadizm --user=cadizm plays/deploy.yml
 
 remote_deploy: _remote_deploy remote_letsencrypt
-	;
+	true
 
 ## One-time targets that should only be used in production
 
