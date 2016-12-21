@@ -1,9 +1,3 @@
-[submodule "ansible-provision"]
-	path = ansible-provision
-	url = https://github.com/cadizm/ansible-provision.git
-[submodule "lib/ansibible-provision"]
-	path = lib/ansibible-provision
-	url = https://github.com/cadizm/ansible-provision.git
 [submodule "lib/ansible-provision"]
 	path = lib/ansible-provision
 	url = https://github.com/cadizm/ansible-provision.git
@@ -16,9 +10,3 @@
 [submodule "lib/roys-ciclisimo"]
 	path = lib/roys-ciclisimo
 	url = https://github.com/cadizm/roys-ciclisimo.git
-[submodule "lib/vrview"]
-	path = lib/vrview
-	url = https://github.com/googlevr/vrview.git
-[submodule "lib/marzipano"]
-	path = lib/marzipano
-	url = https://github.com/google/marzipano.git
