@@ -19,3 +19,6 @@
 [submodule "lib/vrview"]
 	path = lib/vrview
 	url = https://github.com/googlevr/vrview.git
+[submodule "lib/marzipano"]
+	path = lib/marzipano
+	url = https://github.com/google/marzipano.git
