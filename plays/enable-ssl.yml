@@ -4,7 +4,7 @@
 - hosts: all
   become: true
   tasks:
-    - name: Add ssl config lines
+    - name: Add cadizm.com ssl config lines
       blockinfile:
         dest: /etc/nginx/sites-enabled/cadizm.conf
         insertbefore: '^\s*access_log\s+.*$'
@@ -25,13 +25,37 @@
           ssl_stapling on;
           ssl_stapling_verify on;
 
+    - name: Add roysciclisimo.com ssl config lines
+      blockinfile:
+        dest: /etc/nginx/sites-enabled/roysciclisimo.conf
+        insertbefore: '^\s*access_log\s+.*$'
+        block: |
+          if ($https = "") {
+            set $do_https_redirect HTTPS;
+          }
+          if ($host != 192.168.101.3) {
+            set $do_https_redirect "${do_https_redirect}HOST";
+          }
+          if ($do_https_redirect = HTTPSHOST) {
+              return 301 https://$server_name$request_uri;
+          }
+
+          ssl_certificate /etc/letsencrypt/live/roysciclisimo.com/fullchain.pem;
+          ssl_certificate_key /etc/letsencrypt/live/roysciclisimo.com/privkey.pem;
+
+          ssl_stapling on;
+          ssl_stapling_verify on;
+
     - name: Install letsencrypt
       apt:
         name: letsencrypt
         state: latest
 
-    - name: Get ssl/tls cert
+    - name: Get cadizm.com ssl/tls cert
       command: letsencrypt certonly --webroot -w /opt/cadizm/var/www/ -d cadizm.com --non-interactive --email='michael.cadiz@gmail.com' --agree-tos
+
+    - name: Get roysciclisimo.com ssl/tls cert
+      command: letsencrypt certonly --webroot -w /opt/cadizm/var/www/ -d roysciclisimo.com --non-interactive --email='michael.cadiz@gmail.com' --agree-tos
 
     - name: Add cert renewal cron
       cron:
