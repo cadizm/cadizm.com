@@ -23,10 +23,14 @@ SECRET_KEY = secrets['DJANGO_SECRET_KEY']
 
 GOOGLE_API_KEY = secrets['GOOGLE_API_KEY']
 
+FCKCO_CLIENT_ID = secrets['FCKCO_CLIENT_ID']
+FCKCO_CLIENT_SECRET = secrets['FCKCO_CLIENT_SECRET']
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+HOST_NAME = 'cadizm.com'
 ALLOWED_HOSTS = ['192.168.101.3', '.cadizm.com']
 
 

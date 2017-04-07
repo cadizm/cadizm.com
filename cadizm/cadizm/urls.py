@@ -4,6 +4,7 @@ from django.conf.urls import url
 import cadizm.bookmarks.views
 from cadizm.theta360.views import Theta360View
 from cadizm.about.views import PrivacyView
+from cadizm.instagram.views import AccessTokenView, GetTokenView
 
 
 urlpatterns = [
@@ -13,4 +14,7 @@ urlpatterns = [
 
     url(r'^360/$', Theta360View.as_view(), name='theta360'),
     url(r'^privacy/$', PrivacyView.as_view(), name='privacy'),
+
+    url(r'^instagram/access-token/$', AccessTokenView.as_view(), name='access_token'),
+    url(r'^instagram/get-token/$', GetTokenView.as_view(), name='get_token'),
 ]
