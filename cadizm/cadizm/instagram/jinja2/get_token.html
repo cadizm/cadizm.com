@@ -1,1 +1,5 @@
+{% if token %}
 <pre>access_token: {{ token }}</pre>
+{% else %}
+<pre>{{ error }}</pre>
+{% endif %}

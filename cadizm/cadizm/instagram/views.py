@@ -9,6 +9,10 @@ from django.views.generic.base import TemplateView
 import requests
 
 
+import logging
+logger = logging.getLogger(__name__)
+
+
 class AccessTokenView(TemplateView):
     instagram_authorize_uri = 'https://api.instagram.com/oauth/authorize'
 
@@ -40,10 +44,12 @@ class GetTokenView(TemplateView):
 
         response = requests.get(self.instagram_access_token_uri, params=params)
 
+        logger.info(response.url)
+
         if response.ok:
             data = response.json()
             context.update(token=data['access_token'])
         else:
-            context.update(token=None)
+            context.update(error=response.content)
 
         return context
