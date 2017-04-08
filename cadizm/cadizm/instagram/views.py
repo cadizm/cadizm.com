@@ -13,7 +13,7 @@ class AccessTokenView(TemplateView):
     def dispatch(self, *args, **kwargs):
         params = dict(
             client_id=settings.FCKCO_CLIENT_ID,
-            redirect_uri='https://%s/%s' % (settings.HOST_NAME, reverse('get_token')),
+            redirect_uri='https://%s%s' % (settings.HOST_NAME, reverse('get_token')),
             response_type='code',
             )
         url = '%s/?%s' % (self.instagram_authorize_uri, urlencode(params))

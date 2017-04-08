@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'cadizm.bookmarks',
     'cadizm.theta360',
     'cadizm.about',
+    'cadizm.instagram',
 ]
 
 MIDDLEWARE = [
