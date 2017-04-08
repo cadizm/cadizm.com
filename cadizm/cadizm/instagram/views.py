@@ -6,6 +6,8 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.views.generic.base import TemplateView
 
+import requests
+
 
 class AccessTokenView(TemplateView):
     instagram_authorize_uri = 'https://api.instagram.com/oauth/authorize'
@@ -23,6 +25,25 @@ class AccessTokenView(TemplateView):
 class GetTokenView(TemplateView):
     template_name = 'get_token.html'
 
+    instagram_access_token_uri = 'https://api.instagram.com/oauth/access_token'
+
     def get_context_data(self, *args, **kwargs):
         context = super(GetTokenView, self).get_context_data(*args, **kwargs)
+
+        params = dict(
+            client_id=settings.FCKCO_CLIENT_ID,
+            client_secret=settings.FCKCO_CLIENT_SECRET,
+            grant_type='authorization_code',
+            redirect_uri='https://%s%s' % (settings.HOST_NAME, reverse('get_token')),
+            code=self.request.GET('code'),
+            )
+
+        response = requests.get(self.instagram_access_token_uri, params=params)
+
+        if response.ok:
+            data = response.json()
+            context.update(token=data['access_token'])
+        else:
+            context.update(token=None)
+
         return context
