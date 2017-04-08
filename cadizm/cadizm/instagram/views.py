@@ -44,12 +44,14 @@ class GetTokenView(TemplateView):
 
         response = requests.get(self.instagram_access_token_uri, params=params)
 
-        logger.info(response.url)
+        logger.info("Requesting access_token: %s" % response.url)
 
         if response.ok:
             data = response.json()
             context.update(token=data['access_token'])
         else:
-            context.update(error=response.content)
+            error = '%s %s' % (response.status_code, response.content)
+            logger.error(error)
+            context.update(error=error)
 
         return context
