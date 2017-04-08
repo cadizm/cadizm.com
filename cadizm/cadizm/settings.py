@@ -28,7 +28,7 @@ FCKCO_CLIENT_SECRET = secrets['FCKCO_CLIENT_SECRET']
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 HOST_NAME = 'cadizm.com'
 ALLOWED_HOSTS = ['192.168.101.3', '.cadizm.com']
