@@ -21,6 +21,7 @@ class AccessTokenView(TemplateView):
             client_id=settings.FCKCO_CLIENT_ID,
             redirect_uri='https://%s%s' % (settings.HOST_NAME, reverse('get_token')),
             response_type='code',
+            scope='basic public_content follower_list comments relationships likes',
             )
         url = '%s/?%s' % (self.instagram_authorize_uri, urlencode(params))
         return HttpResponseRedirect(url)
