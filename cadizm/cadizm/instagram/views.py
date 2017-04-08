@@ -35,7 +35,7 @@ class GetTokenView(TemplateView):
             client_secret=settings.FCKCO_CLIENT_SECRET,
             grant_type='authorization_code',
             redirect_uri='https://%s%s' % (settings.HOST_NAME, reverse('get_token')),
-            code=self.request.GET('code'),
+            code=self.request.GET['code'],
             )
 
         response = requests.get(self.instagram_access_token_uri, params=params)
