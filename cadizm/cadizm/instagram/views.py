@@ -34,7 +34,7 @@ class GetTokenView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(GetTokenView, self).get_context_data(*args, **kwargs)
 
-        params = dict(
+        payload = dict(
             client_id=settings.FCKCO_CLIENT_ID,
             client_secret=settings.FCKCO_CLIENT_SECRET,
             grant_type='authorization_code',
@@ -42,7 +42,7 @@ class GetTokenView(TemplateView):
             code=self.request.GET['code'],
             )
 
-        response = requests.get(self.instagram_access_token_uri, params=params)
+        response = requests.post(self.instagram_access_token_uri, data=payload)
 
         logger.info("Requesting access_token: %s" % response.url)
 
