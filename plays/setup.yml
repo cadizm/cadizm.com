@@ -16,6 +16,12 @@
         dest: /etc/nginx/sites-enabled
       notify: Reload nginx
 
+    - name: Copy mcadiz nginx conf
+      copy:
+        src: "{{playbook_dir}}/mcadiz.conf"
+        dest: /etc/nginx/sites-enabled
+      notify: Reload nginx
+
     - name: Copy roysciclisimo nginx conf
       copy:
         src: "{{playbook_dir}}/roysciclisimo.conf"
