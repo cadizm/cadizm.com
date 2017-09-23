@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import socket
 import yaml
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -28,11 +29,16 @@ FCKCO_CLIENT_SECRET = secrets['FCKCO_CLIENT_SECRET']
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+if socket.gethostname() in ['l00k', ]:
+    DEBUG = True
+else:
+    DEBUG = False
 
 HOST_NAME = 'cadizm.com'
-ALLOWED_HOSTS = ['192.168.101.3', '.cadizm.com']
 
+ALLOWED_HOSTS = ['192.168.101.3', '.cadizm.com']
+if DEBUG:
+    ALLOWED_HOSTS.append('localhost')
 
 # Application definition
 
@@ -48,7 +54,11 @@ INSTALLED_APPS = [
     'cadizm.theta360',
     'cadizm.about',
     'cadizm.instagram',
+    'cadizm.tees',
 ]
+
+if DEBUG:
+    INSTALLED_APPS.append('django_extensions')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

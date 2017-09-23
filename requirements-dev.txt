@@ -2,6 +2,7 @@
 
 ansible==2.1.1.0
 django-extensions==1.7.4
+django-shell-plus==1.1.7
 ipdb==0.8.1
 ipdbplugin==1.4.2
 ipython==4.0.0

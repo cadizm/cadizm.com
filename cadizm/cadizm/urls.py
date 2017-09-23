@@ -5,6 +5,7 @@ import cadizm.bookmarks.views
 from cadizm.theta360.views import Theta360View
 from cadizm.about.views import PrivacyView
 from cadizm.instagram.views import AccessTokenView, GetTokenView
+from cadizm.tees.views import TeesView, TeeView
 
 
 urlpatterns = [
@@ -17,4 +18,7 @@ urlpatterns = [
 
     url(r'^instagram/access-token/$', AccessTokenView.as_view(), name='access_token'),
     url(r'^instagram/get-token/$', GetTokenView.as_view(), name='get_token'),
+
+    url(r'^tees/$', TeesView.as_view(), name='tees'),
+    url(r'^tees/(?P<tee>\w+)/$', TeeView.as_view(), name='tee'),
 ]
