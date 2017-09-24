@@ -45,7 +45,7 @@ ACTIVE_TEES = {
 
     'broken-heart-black': Tee(
         slug='broken-heart-black',
-        name='broken heart',
+        name='Broken Heart',
         description='Black cotton tee with broken-hearted chest logo.',
         price_cents=4200,
         ),
