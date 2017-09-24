@@ -16,41 +16,42 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class TeesView(TemplateView):
-    template_name = 'tees/index.html'
-
+class BaseTemplateView(TemplateView):
     def get_context_data(self, *args, **kwargs):
-        context = super(TeesView, self).get_context_data(*args, **kwargs)
+        context = super(BaseTemplateView, self).get_context_data(*args, **kwargs)
 
         context.update(
             now=str(datetime.date.today()),
+            year=datetime.datetime.now().year,
+            stripe_pub_key=settings.CADIZM_STRIPE_PUB_KEY,
         )
 
         return context
 
 
 class TeeMixin(object):
+    order = None
+
     def dispatch(self, *args, **kwargs):
         try:
-            self.tee = Tee.find(kwargs['tee'])
+            tee_slug = self.order.tee_slug if self.order else kwargs['tee']
+            self.tee = Tee.find(tee_slug)
         except:
             raise Http404("TeeNotFound: %s" % kwargs['tee'])
         return super(TeeMixin, self).dispatch(*args, **kwargs)
 
-
-class TeeView(TeeMixin, TemplateView):
-    template_name = 'tee/index.html'
-
     def get_context_data(self, *args, **kwargs):
-        context = super(TeeView, self).get_context_data(*args, **kwargs)
-
-        context.update(
-            tee=self.tee,
-            year=datetime.datetime.now().year,
-            stripe_pub_key=settings.CADIZM_STRIPE_PUB_KEY,
-        )
-
+        context = super(TeeMixin, self).get_context_data(*args, **kwargs)
+        context.update(tee=self.tee)
         return context
+
+
+class TeesView(BaseTemplateView):
+    template_name = 'tees/index.html'
+
+
+class TeeView(TeeMixin, BaseTemplateView):
+    template_name = 'tee/index.html'
 
 
 class TeesCheckoutView(TeeMixin, View):
@@ -73,38 +74,22 @@ class TeesCheckoutView(TeeMixin, View):
         return HttpResponseRedirect(reverse('confirmation', kwargs=kwargs))
 
 
-class CheckoutConfirmationView(TemplateView):
+class CheckoutConfirmationView(TeeMixin, BaseTemplateView):
     template_name = 'checkout/confirmation.html'
 
     def dispatch(self, *args, **kwargs):
         try:
             self.order = Order.objects.get(number=kwargs['number'])
-            self.tee = Tee.find(self.order.tee_slug)
         except:
-            raise Http404("Order Not Found: %s" % kwargs['tee'])
+            raise Http404("Order Not Found: %s" % kwargs['number'])
         return super(CheckoutConfirmationView, self).dispatch(*args, **kwargs)
 
 
     def get_context_data(self, *args, **kwargs):
         context = super(CheckoutConfirmationView, self).get_context_data(*args, **kwargs)
-
-        context.update(
-            order=self.order,
-            tee=self.tee,
-            year=datetime.datetime.now().year,
-        )
-
+        context.update(order=self.order)
         return context
 
 
-class CheckoutErrorView(TemplateView):
+class CheckoutErrorView(BaseTemplateView):
     template_name = 'checkout/error.html'
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(CheckoutErrorView, self).get_context_data(*args, **kwargs)
-
-        context.update(
-            year=datetime.datetime.now().year,
-        )
-
-        return context
