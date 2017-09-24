@@ -5,7 +5,13 @@ import cadizm.bookmarks.views
 from cadizm.theta360.views import Theta360View
 from cadizm.about.views import PrivacyView
 from cadizm.instagram.views import AccessTokenView, GetTokenView
-from cadizm.tees.views import TeesView, TeeView
+from cadizm.tees.views import (
+    TeesView,
+    TeeView,
+    TeesCheckoutView,
+    CheckoutConfirmationView,
+    CheckoutErrorView,
+    )
 
 
 urlpatterns = [
@@ -20,5 +26,10 @@ urlpatterns = [
     url(r'^instagram/get-token/$', GetTokenView.as_view(), name='get_token'),
 
     url(r'^tees/$', TeesView.as_view(), name='tees'),
+
+    url(r'^tees/order/(?P<number>\w+)/$', CheckoutConfirmationView.as_view(), name='confirmation'),
+    url(r'^tees/error/$', CheckoutErrorView.as_view(), name='checkout_error'),
+
     url(r'^tees/(?P<tee>(\w+|-*)+)/$', TeeView.as_view(), name='tee'),
+    url(r'^tees/(?P<tee>(\w+|-*)+)/checkout/$', TeesCheckoutView.as_view(), name='checkout'),
 ]
