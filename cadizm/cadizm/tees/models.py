@@ -19,6 +19,7 @@ class Tee(object):
     def __init__(self, **kwargs):
         self.slug = kwargs.get('slug', None)
         self.name = kwargs.get('name', None)
+        self.size = kwargs.get('size', None)
         self.description = kwargs.get('description', None)
         self.price_cents = kwargs.get('price_cents', None)
 
@@ -80,6 +81,7 @@ class Order(models.Model):
 
     number = models.CharField(max_length=128)
     tee_slug = models.CharField(max_length=128)
+    tee_size = models.CharField(max_length=8)
     amount = models.PositiveIntegerField()
     email = models.CharField(max_length=128)
     token = models.CharField(max_length=128)

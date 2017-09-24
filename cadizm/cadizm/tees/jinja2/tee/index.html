@@ -22,17 +22,24 @@
       </div>
 
       <div class="row marketing">
+      <form action="/tees/{{ tee.slug }}/checkout/" method="POST">
         <div class="col-lg-6">
           <h4>{{ tee.name }} Tee</h4>
           <p>{{ tee.description }}</p>
           <!-- TODO: dropdown for size -->
-          <p>Sizes: S, M, L, XL</p>
+          <p>Size:
+            <select name="tee_size">
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+            </select>
+          </p>
         </div>
 
         <div class="col-lg-6">
           <h5>{{ tee.price }}</h5>
           <p>
-            <form action="/tees/{{ tee.slug }}/checkout/" method="POST">
             <script
               src="https://checkout.stripe.com/checkout.js" class="stripe-button"
               data-key="{{ stripe_pub_key }}"
@@ -47,9 +54,9 @@
               data-shipping-address="true">
             </script>
             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-            </form>
           </p>
         </div>
+      </form>
       </div>
 
       <footer class="footer">
