@@ -27,6 +27,8 @@ GOOGLE_API_KEY = secrets['GOOGLE_API_KEY']
 FCKCO_CLIENT_ID = secrets['FCKCO_CLIENT_ID']
 FCKCO_CLIENT_SECRET = secrets['FCKCO_CLIENT_SECRET']
 
+CADIZM_STRIPE_PUB_KEY = secrets['CADIZM_STRIPE_PUB_KEY']
+CADIZM_STRIPE_SECRET_KEY = secrets['CADIZM_STRIPE_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if socket.gethostname() in ['l00k', ]:

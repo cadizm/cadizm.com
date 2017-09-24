@@ -20,5 +20,5 @@ urlpatterns = [
     url(r'^instagram/get-token/$', GetTokenView.as_view(), name='get_token'),
 
     url(r'^tees/$', TeesView.as_view(), name='tees'),
-    url(r'^tees/(?P<tee>\w+)/$', TeeView.as_view(), name='tee'),
+    url(r'^tees/(?P<tee>(\w+|-*)+)/$', TeeView.as_view(), name='tee'),
 ]

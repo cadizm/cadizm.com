@@ -3,10 +3,11 @@ from __future__ import unicode_literals
 
 import datetime
 
+from django.conf import settings
 from django.http import Http404
 from django.views.generic.base import TemplateView
 
-from cadizm.tees.models import active_tee
+from cadizm.tees.models import Tee
 
 
 class TeesView(TemplateView):
@@ -26,10 +27,10 @@ class TeeView(TemplateView):
     template_name = 'tee/index.html'
 
     def dispatch(self, *args, **kwargs):
-        self.tee = kwargs['tee']
+        self.tee = Tee.find(kwargs['tee'])
 
-        if not active_tee(self.tee):
-            raise Http404("Inactive tee: %s" % self.tee)
+        if not self.tee:
+            raise Http404("Bad tee: %s" % kwargs['tee'])
 
         return super(TeeView, self).dispatch(*args, **kwargs)
 
@@ -39,6 +40,7 @@ class TeeView(TemplateView):
         context.update(
             tee=self.tee,
             year=datetime.datetime.now().year,
+            stripe_pub_key=settings.CADIZM_STRIPE_PUB_KEY,
         )
 
         return context

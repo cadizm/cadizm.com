@@ -5,44 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
 
-    <title>{{ tee }}</title>
+    <title>{{ tee.name }}</title>
 
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/css/tees.css" rel="stylesheet">
   </head>
 
   <body>
-
     <div class="container">
       <div class="header clearfix">
-        <h4 class="text-muted"><a href="">{{ tee }}</a></h4>
+        <h4 class="text-muted"><a href="/tees/{{ tee.slug }}">{{ tee.name }}</a></h4>
       </div>
 
       <div class="jumbotron" style="background-color: transparent">
-        <img src="/static/images/tees/{{ tee }}.jpg" class="img-responsive">
+        <img src="/static/images/tees/{{ tee.slug }}.jpg" class="img-responsive">
       </div>
 
       <div class="row marketing">
         <div class="col-lg-6">
-          <h4>Subheading</h4>
-          <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-
-          <h4>Subheading</h4>
-          <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
-
-          <h4>Subheading</h4>
-          <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+          <h4>{{ tee.name }} Tee</h4>
+          <p>{{ tee.description }}</p>
+          <p>Sizes: S, M, L, XL</p>
         </div>
 
         <div class="col-lg-6">
-          <h4>Subheading</h4>
-          <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
-
-          <h4>Subheading</h4>
-          <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
-
-          <h4>Subheading</h4>
-          <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+          <h5>{{ tee.price }}</h5>
+          <p>
+            <form action="/your-server-side-code" method="POST">
+            <script
+              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+              data-key="{{ stripe_pub_key }}"
+              data-amount="{{ tee.price_cents }}"
+              data-name="{{ tee.slug }}"
+              data-description="{{ tee.name }}"
+              data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+              data-locale="auto"
+              data-zip-code="true"
+              data-billingAddress="true"
+              data-shippingAddress="true">
+            </script>
+            </form>
+          </p>
         </div>
       </div>
 
