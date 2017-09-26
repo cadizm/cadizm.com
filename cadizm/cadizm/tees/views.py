@@ -21,7 +21,7 @@ class BaseTemplateView(TemplateView):
         context = super(BaseTemplateView, self).get_context_data(*args, **kwargs)
 
         context.update(
-            now=str(datetime.date.today()),
+            now=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             year=datetime.datetime.now().year,
             stripe_pub_key=settings.CADIZM_STRIPE_PUB_KEY,
         )

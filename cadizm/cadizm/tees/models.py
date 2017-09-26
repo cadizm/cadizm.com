@@ -27,6 +27,14 @@ class Tee(object):
     def price(self):
         return "$%.2f" % (self.amount / 100)
 
+    @property
+    def stripe_description(self):
+        "Stripe descriptions have max len 22"
+        desc = "%s Tee" % self.name
+        if len(desc) <= 22:
+            return desc
+        return "%s%s" % (self.name[:19], "...")
+
     @classmethod
     def find(clazz, name):
         try:
@@ -108,7 +116,7 @@ class StripeChargeManager(models.Manager):
         charge = stripe.Charge.create(
             amount=order.amount,
             currency='usd',
-            description=tee.name[:21],  # max len
+            description=tee.stripe_description,
             metadata=metadata,
             receipt_email=order.email,
             source=order.token,
