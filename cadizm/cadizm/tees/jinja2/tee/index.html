@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+
+    <title>{{ tee.name }}</title>
+
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/tees.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="header clearfix">
+        <h4 class="text-muted"><a href="/tees/{{ tee.slug }}">{{ tee.name }}</a></h4>
+      </div>
+
+      <div class="jumbotron" style="background-color: transparent">
+        <img src="/static/images/tees/{{ tee.slug }}.jpg" class="img-responsive center-block">
+      </div>
+
+      <div class="row marketing">
+      <form action="/tees/{{ tee.slug }}/checkout/" method="POST">
+        <div class="col-lg-6">
+          <h4>{{ tee.name }} tee</h4>
+          <p>{{ tee.description }}</p>
+          <p>Size:
+            <select name="tee_size">
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+            </select>
+          </p>
+        </div>
+
+        <div class="col-lg-6">
+          <h5>{{ tee.price }}</h5>
+          <p>
+            <script
+              src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+              data-key="{{ stripe_pub_key }}"
+              data-label="Purchase"
+              data-amount="{{ tee.amount }}"
+              data-name="{{ tee.name }}"
+              data-description="{{ tee.description }}"
+              data-image="/static/images/tees/{{ tee.slug }}.jpg"
+              data-locale="auto"
+              data-zip-code="true"
+              data-billing-address="true"
+              data-shipping-address="true">
+            </script>
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+          </p>
+        </div>
+      </form>
+      </div>
+
+      <footer class="footer">
+        <div>
+        <p class="pull-left"><a href="/tees/">home</a></p>
+        <p class="pull-right">&copy; <a href="/">cadizm</a> {{ year }}</p>
+        </div>
+      </footer>
+
+    </div>
+
+    <script src="/static/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
