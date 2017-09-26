@@ -43,7 +43,7 @@
               src="https://checkout.stripe.com/checkout.js" class="stripe-button"
               data-key="{{ stripe_pub_key }}"
               data-label="Purchase"
-              data-amount="{{ tee.price_cents }}"
+              data-amount="{{ tee.amount }}"
               data-name="{{ tee.name }}"
               data-description="{{ tee.description }}"
               data-image="/static/images/tees/{{ tee.slug }}.jpg"

@@ -60,7 +60,7 @@ class TeesCheckoutView(TeeMixin, View):
 
         kwargs.update(
             tee_slug=self.tee.slug,
-            amount=self.tee.price_cents,
+            amount=self.tee.amount,
         )
 
         try:

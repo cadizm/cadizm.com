@@ -21,11 +21,11 @@ class Tee(object):
         self.name = kwargs.get('name', None)
         self.size = kwargs.get('size', None)
         self.description = kwargs.get('description', None)
-        self.price_cents = kwargs.get('price_cents', None)
+        self.amount = kwargs.get('amount', None)
 
     @property
     def price(self):
-        return "$%.2f" % (self.price_cents / 100.0)
+        return "$%.2f" % (self.amount / 100)
 
     @classmethod
     def find(clazz, name):
@@ -40,14 +40,7 @@ ACTIVE_TEES = {
         slug='broken-heart-white',
         name='Broken Heart',
         description='White cotton tee with broken-hearted chest logo.',
-        price_cents=4200,
-        ),
-
-    'broken-heart-black': Tee(
-        slug='broken-heart-black',
-        name='Broken Heart',
-        description='Black cotton tee with broken-hearted chest logo.',
-        price_cents=4200,
+        amount=4200,
         ),
 }
 
@@ -73,7 +66,7 @@ class OrderManager(models.Manager):
         return res
 
     def generate_order_number(self):
-        return "%s%s" % (self.fake.word(), int((time.time() % 1 ) * 10000))
+        return "%s%s" % (''.join(self.fake.words(2)), int((time.time() % 1 ) * 100000))
 
 
 class Order(models.Model):
