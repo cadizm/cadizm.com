@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import datetime
 
 from django.conf import settings
+from django.core.mail import EmailMessage
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseRedirect
 from django.views.generic.base import TemplateView, View
@@ -70,8 +71,23 @@ class TeesCheckoutView(TeeMixin, View):
             logger.exception(e)
             return HttpResponseRedirect(reverse('checkout_error'))
 
+        self.send_confirmation_email(order)
+
         kwargs = dict(number=charge.order.number)
         return HttpResponseRedirect(reverse('confirmation', kwargs=kwargs))
+
+    def send_confirmation_email(self, order):
+        email = EmailMessage(
+            subject="Order# %s Confirmation" % order.number,
+            body=order.text_email_body,
+            from_email="cadizm.com <%s>" % settings.EMAIL_HOST_USER,
+            to=[order.email],
+            bcc=[settings.EMAIL_HOST_USER],
+        )
+        try:
+            email.send()
+        except Exception as e:
+            logger.exception(e)
 
 
 class CheckoutConfirmationView(TeeMixin, BaseTemplateView):
@@ -83,7 +99,6 @@ class CheckoutConfirmationView(TeeMixin, BaseTemplateView):
         except:
             raise Http404("Order Not Found: %s" % kwargs['number'])
         return super(CheckoutConfirmationView, self).dispatch(*args, **kwargs)
-
 
     def get_context_data(self, *args, **kwargs):
         context = super(CheckoutConfirmationView, self).get_context_data(*args, **kwargs)

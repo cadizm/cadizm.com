@@ -104,6 +104,31 @@ class Order(models.Model):
     shipping_address_zip = models.CharField(max_length=128)
     shipping_name = models.CharField(max_length=128)
 
+    @property
+    def text_email_body(self):
+        tee = Tee.find(self.tee_slug)
+        body = """
+Confirmation for order# {number}
+{price} {name} Tee {size}
+
+Shipping to:
+{shipping_name}
+{shipping_address_line1}
+{shipping_address_city}, {shipping_address_state} {shipping_address_zip}
+"""
+        kwargs = dict(
+            number=self.number,
+            name=tee.name,
+            size=self.tee_size,
+            price=tee.price,
+            shipping_name=self.shipping_name,
+            shipping_address_line1=self.shipping_address_line1,
+            shipping_address_city=self.shipping_address_city,
+            shipping_address_state=self.shipping_address_state,
+            shipping_address_zip=self.shipping_address_zip,
+        )
+        return body.format(**kwargs)
+
 
 class StripeChargeManager(models.Manager):
     stripe.api_key = settings.CADIZM_STRIPE_SECRET_KEY
