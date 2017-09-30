@@ -5,22 +5,22 @@ all:
 	@echo "See this Makefile for targets"
 
 local_setup:
-	ansible-playbook --limit=local-cadizm plays/setup.yml
+	ansible-playbook -i plays/hosts --limit=local-cadizm plays/setup.yml
 
 local_migrate:
-	ansible-playbook --limit=local-cadizm plays/migrate.yml
+	ansible-playbook -i plays/hosts --limit=local-cadizm plays/migrate.yml
 
 local_deploy:
-	ansible-playbook --limit=local-cadizm plays/deploy.yml
+	ansible-playbook -i plays/hosts --limit=local-cadizm plays/deploy.yml
 
 remote_setup:
-	ansible-playbook --limit=remote-cadizm --user=cadizm plays/setup.yml
+	ansible-playbook -i plays/hosts --limit=remote-cadizm --user=cadizm plays/setup.yml
 
 remote_migrate:
-	ansible-playbook --limit=remote-cadizm --user=cadizm plays/migrate.yml
+	ansible-playbook -i plays/hosts --limit=remote-cadizm --user=cadizm plays/migrate.yml
 
 _remote_deploy:
-	ansible-playbook --limit=remote-cadizm --user=cadizm plays/deploy.yml
+	ansible-playbook -i plays/hosts --limit=remote-cadizm --user=cadizm plays/deploy.yml
 
 remote_deploy: _remote_deploy remote_letsencrypt
 	true
@@ -29,7 +29,7 @@ remote_deploy: _remote_deploy remote_letsencrypt
 
 # note: requires python on remote host and will disable root login
 remote_adduser_cadizm:
-	ansible-playbook --limit=remote-cadizm --user=root lib/ansible-provision/adduser-cadizm.yml
+	ansible-playbook -i plays/hosts --limit=remote-cadizm --user=root lib/ansible-provision/adduser-cadizm.yml
 
 remote_letsencrypt:
-	ansible-playbook --limit=remote-cadizm --user=cadizm plays/enable-ssl.yml
+	ansible-playbook -i plays/hosts --limit=remote-cadizm --user=cadizm plays/enable-ssl.yml
