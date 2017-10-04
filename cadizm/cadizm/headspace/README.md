@@ -3,7 +3,7 @@ Create a User
 =============
 
 ```
-POST /headspace/users
+POST /headspace/users/
 ```
 
 The endpoint's post body requires `username` and optionally accepts a list of
@@ -67,7 +67,7 @@ Create a Book
 =============
 
 ```
-POST /headspace/books
+POST /headspace/books/
 ```
 
 The endpoint's post body requires both `title` and `author`. If the given
@@ -126,7 +126,7 @@ Add a Book as Unread to a User's Library
 ========================================
 
 ```
-POST /headspace/users/:username/books/:book_id
+POST /headspace/users/:username/books/:book_id/
 ```
 
 The endpoint requires a valid `username` and `book_id` as part of the path,
@@ -163,8 +163,8 @@ Mark a User's Book as Read or Unread
 ====================================
 
 ```
-PUT /headspace/users/:username/books/:book_id/read
-PUT /headspace/users/:username/books/:book_id/unread
+PUT /headspace/users/:username/books/:book_id/read/
+PUT /headspace/users/:username/books/:book_id/unread/
 ```
 
 The endpoint requires a valid `username` and `book_id` as part of the path,
@@ -201,7 +201,7 @@ Delete a Book from a User's Library
 ===================================
 
 ```
-DELETE /headspace/users/:username/books/:book_id
+DELETE /headspace/users/:username/books/:book_id/
 ```
 
 The endpoint requires a valid `username` and `book_id` as part of the path,
@@ -238,7 +238,7 @@ List all Books in a User's Library
 ==================================
 
 ```
-GET /headspace/users/:username/books
+GET /headspace/users/:username/books/
 ```
 
 The endpoint requires a valid `username` as part of the path, but does not

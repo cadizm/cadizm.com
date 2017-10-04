@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
-from django.conf.urls import url
+from django.conf.urls import include, url
 
 import cadizm.bookmarks.views
 from cadizm.theta360.views import Theta360View
@@ -32,4 +34,6 @@ urlpatterns = [
 
     url(r'^tees/(?P<tee>(\w+|-*)+)/$', TeeView.as_view(), name='tee'),
     url(r'^tees/(?P<tee>(\w+|-*)+)/checkout/$', TeesCheckoutView.as_view(), name='checkout'),
+
+    url(r'^headspace/', include('cadizm.headspace.urls')),
 ]
