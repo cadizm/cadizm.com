@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import json
+
 from django.http import HttpResponseBadRequest, HttpResponseServerError
 from django.views.generic.base import View
 
@@ -12,9 +14,18 @@ from cadizm.headspace.exceptions import MethodNotAllowedError
 
 class BaseView(View):
     methods = []
+    json = None
+
     def dispatch(self, *args, **kwargs):
         if self.request.method not in self.methods:
             return HttpResponseBadRequest("Method Not Allowed", status=405)
+
+        if self.request.content_type == 'application/json':
+            try:
+                self.json = json.loads(self.request.body)
+            except ValueError:
+                return HttpResponseBadRequest("Invalid JSON body")
+
         return super(BaseView, self).dispatch(*args, **kwargs)
 
 
