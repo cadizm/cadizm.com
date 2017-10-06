@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.test import TestCase, Client
 
 from cadizm.headspace.models import User, Book
 from cadizm.headspace.tests import BaseTestCase
@@ -16,19 +17,23 @@ class CreateUserTestCase(BaseTestCase):
         response = self.post(self.url, {'username': 'foo'})
         self.assertEquals(201, response.status_code)
         self.assertEquals(1, User.objects.count())
+        self.assertEquals('foo', response.json()['result']['username'])
 
     def test_username_empty(self):
         response = self.post(self.url, {'username': ''})
         self.assertEquals(400, response.status_code)
+        self.assertEquals('Missing or empty username', response.json()['meta']['reason'])
 
     def test_username_missing(self):
         response = self.post(self.url, {})
         self.assertEquals(400, response.status_code)
+        self.assertEquals('Missing or empty username', response.json()['meta']['reason'])
 
     def test_bad_json(self):
         # manually create client in order to send bad json
         response = Client().post(self.url, data='{invalid json}}', content_type='application/json')
         self.assertEquals(400, response.status_code)
+        self.assertEquals('Invalid JSON body', response.json()['meta']['reason'])
 
     def test_username_already_exists(self):
         response = self.post(self.url, {'username': 'baz'})

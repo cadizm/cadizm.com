@@ -3,13 +3,19 @@ from __future__ import unicode_literals
 
 import json
 
-from django.http import HttpResponseBadRequest, HttpResponseServerError
+from django.core.exceptions import ValidationError
+from django.db import IntegrityError
+from django.http import HttpResponseNotAllowed
 from django.views.generic.base import View
 
+# TODO: remove me
 from django.http import HttpResponse
 
+from cadizm.headspace.http import (
+    CreateUserResponse,
+    ErrorResponse)
 
-from cadizm.headspace.exceptions import MethodNotAllowedError
+from cadizm.headspace.models import User, Book, Library
 
 
 class BaseView(View):
@@ -18,13 +24,13 @@ class BaseView(View):
 
     def dispatch(self, *args, **kwargs):
         if self.request.method not in self.methods:
-            return HttpResponseBadRequest("Method Not Allowed", status=405)
+            return HttpResponseNotAllowed(self.methods)
 
         if self.request.content_type == 'application/json':
             try:
                 self.json = json.loads(self.request.body)
             except ValueError:
-                return HttpResponseBadRequest("Invalid JSON body")
+                return ErrorResponse(reason="Invalid JSON body")
 
         return super(BaseView, self).dispatch(*args, **kwargs)
 
@@ -33,7 +39,19 @@ class CreateUserView(BaseView):
     methods = ['POST']
 
     def post(self, *args, **kwargs):
-        return HttpResponse("CreateUserView")
+        try:
+            username = self.json.get('username', None)
+            book_ids = self.json.get('book_ids', None)
+            if not username:
+                raise ValidationError('Missing or empty username')
+
+            return CreateUserResponse(User.objects.create(username=username), book_ids)
+
+        except (ValidationError, IntegrityError) as e:
+            reason = e.message
+            if isinstance(e, IntegrityError):
+                reason = 'Username already exists'
+            return ErrorResponse(reason=reason)
 
 
 class CreateBookView(BaseView):
