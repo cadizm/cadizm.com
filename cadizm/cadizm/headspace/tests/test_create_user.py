@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.test import TestCase, Client
+from django.test import Client
 
 from cadizm.headspace.models import User, Book
 from cadizm.headspace.tests import BaseTestCase

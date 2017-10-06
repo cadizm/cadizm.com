@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 import json
 
 from django.core.exceptions import ValidationError
-from django.db import IntegrityError
 from django.http import HttpResponseNotAllowed
 from django.views.generic.base import View
 
@@ -13,6 +12,7 @@ from django.http import HttpResponse
 
 from cadizm.headspace.http import (
     CreateUserResponse,
+    CreateBookResponse,
     ErrorResponse)
 
 from cadizm.headspace.models import User, Book, Library
@@ -47,18 +47,24 @@ class CreateUserView(BaseView):
 
             return CreateUserResponse(User.objects.create(username=username), book_ids)
 
-        except (ValidationError, IntegrityError) as e:
-            reason = e.message
-            if isinstance(e, IntegrityError):
-                reason = 'Username already exists'
-            return ErrorResponse(reason=reason)
+        except ValidationError as e:
+            return ErrorResponse(reason=e.message)
 
 
 class CreateBookView(BaseView):
     methods = ['POST']
 
     def post(self, *args, **kwargs):
-        return HttpResponse("CreateBookView")
+        try:
+            title = self.json.get('title', None)
+            author = self.json.get('author', None)
+            if not title or not author:
+                raise ValidationError('Missing or empty title/author')
+
+            return CreateBookResponse(Book.objects.create(title=title, author=author))
+
+        except ValidationError as e:
+            return ErrorResponse(reason=e.message)
 
 
 class ListBooksView(BaseView):

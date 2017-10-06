@@ -38,12 +38,12 @@ class ErrorResponse(BaseResponse):
 class CreateUserResponse(BaseResponse):
     def __init__(self, user, book_ids=None, invalid_book_ids=None, *args, **kwargs):
         kwargs.update(status=201)
-        self.username = user.username
+        self.user = user
         self.book_ids, self.invalid_book_ids = self.validate_book_ids(book_ids)
         super(CreateUserResponse, self).__init__(*args, **kwargs)
 
     def result(self):
-        result = dict(username=self.username)
+        result = dict(username=self.user.username)
         if self.book_ids:
             result.update(book_ids=self.book_ids)
         if self.invalid_book_ids:
@@ -59,3 +59,13 @@ class CreateUserResponse(BaseResponse):
         invalid_book_ids = set(book_ids) - valid_book_ids
 
         return list(valid_book_ids), list(invalid_book_ids)
+
+
+class CreateBookResponse(BaseResponse):
+    def __init__(self, book, *args, **kwargs):
+        kwargs.update(status=201)
+        self.book = book
+        super(CreateBookResponse, self).__init__(*args, **kwargs)
+
+    def result(self):
+        return dict(title=self.book.title, author=self.book.author, book_id=self.book.id)
