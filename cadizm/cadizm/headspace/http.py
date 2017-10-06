@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.http import JsonResponse
+from django.utils.functional import cached_property
 
 from cadizm.headspace.models import Book
 
@@ -13,8 +14,13 @@ class BaseResponse(JsonResponse):
         super(BaseResponse, self).__init__(self.response(), *args, **kwargs)
 
     def response(self):
-        return dict(result=self.result(), meta=self.meta())
+        response = dict(meta=self.meta())
+        if self.result:
+            response.update(result=self.result)
 
+        return response
+
+    @cached_property
     def result(self):
         raise NotImplementedError
 
@@ -31,6 +37,7 @@ class ErrorResponse(BaseResponse):
         kwargs.update(status=400)
         super(ErrorResponse, self).__init__(*args, **kwargs)
 
+    @cached_property
     def result(self):
         pass
 
@@ -42,6 +49,7 @@ class CreateUserResponse(BaseResponse):
         self.book_ids, self.invalid_book_ids = self.validate_book_ids(book_ids)
         super(CreateUserResponse, self).__init__(*args, **kwargs)
 
+    @cached_property
     def result(self):
         result = dict(username=self.user.username)
         if self.book_ids:
@@ -67,5 +75,17 @@ class CreateBookResponse(BaseResponse):
         self.book = book
         super(CreateBookResponse, self).__init__(*args, **kwargs)
 
+    @cached_property
     def result(self):
         return dict(title=self.book.title, author=self.book.author, book_id=self.book.id)
+
+
+class AddBookResponse(BaseResponse):
+    def __init__(self, library_book, *args, **kwargs):
+        kwargs.update(status=200)
+        self.library_book = library_book
+        super(AddBookResponse, self).__init__(*args, **kwargs)
+
+    @cached_property
+    def result(self):
+        pass

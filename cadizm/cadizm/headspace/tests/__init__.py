@@ -10,5 +10,5 @@ class BaseTestCase(TestCase):
         self.client = Client()
         super(BaseTestCase, self).setUp(*args, **kwargs)
 
-    def post(self, url, data):
-        return self.client.post(url, data=json.dumps(data), content_type='application/json')
+    def post(self, url, data=None):
+        return self.client.post(url, data=json.dumps(data) if data else None, content_type='application/json')

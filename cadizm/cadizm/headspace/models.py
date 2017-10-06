@@ -50,15 +50,26 @@ class Book(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
 
+class LibraryManager(models.Manager):
+    def create(self, **kwargs):
+        user, book = kwargs['user'], kwargs['book']
+
+        if Library.objects.filter(user=user, book=book).exists():
+            raise ValidationError('Book already added')
+
+        return super(LibraryManager, self).create(**kwargs)
+
+
 class Library(models.Model):
-    username = models.ForeignKey(User, to_field='username', on_delete=models.PROTECT)
-    book_id = models.ForeignKey(Book, on_delete=models.PROTECT)
+    objects = LibraryManager()
+    user = models.ForeignKey(User, to_field='username', on_delete=models.PROTECT)
+    book = models.ForeignKey(Book, on_delete=models.PROTECT)
     read = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ('username', 'book_id')
+        unique_together = ('user', 'book')
         indexes = [
-            models.Index(fields=['username'], name='book_id'),
+            models.Index(fields=['user', 'book'], name='user_book_idx'),
         ]
