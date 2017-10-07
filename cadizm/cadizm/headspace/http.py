@@ -89,3 +89,13 @@ class AddBookResponse(BaseResponse):
     @cached_property
     def result(self):
         pass
+
+
+class DeleteBookResponse(BaseResponse):
+    def __init__(self, (n, d), *args, **kwargs):
+        kwargs.update(status=200)
+        super(DeleteBookResponse, self).__init__(*args, **kwargs)
+
+    @cached_property
+    def result(self):
+        pass

@@ -17,7 +17,7 @@ class AddBookTestCase(BaseTestCase):
             'book_id': Book.objects.create(title='bar', author='baz').id,
         }
 
-        response = self.post(self.url.format(**kwargs))
+        response = self.client.post(self.url.format(**kwargs))
         self.assertEquals(200, response.status_code)
         self.assertEquals(1, Library.objects.count())
 
@@ -27,7 +27,7 @@ class AddBookTestCase(BaseTestCase):
             'username': User.objects.create(username='foo').username,
             'book_id': Book.objects.create(title='bar', author='baz').id,
         }
-        response = self.post(self.url.format(**kwargs))
+        response = self.client.post(self.url.format(**kwargs))
         self.assertEquals(1, Library.objects.count())
         library_book = Library.objects.first()
         self.assertFalse(library_book.read)
@@ -37,9 +37,9 @@ class AddBookTestCase(BaseTestCase):
             'username': User.objects.create(username='foo').username,
             'book_id': Book.objects.create(title='bar', author='baz').id,
         }
-        response = self.post(self.url.format(**kwargs))
+        response = self.client.post(self.url.format(**kwargs))
         self.assertEquals(200, response.status_code)
-        response = self.post(self.url.format(**kwargs))
+        response = self.client.post(self.url.format(**kwargs))
         self.assertEquals(400, response.status_code)
         self.assertEquals('Book already added', response.json()['meta']['reason'])
 
@@ -48,7 +48,7 @@ class AddBookTestCase(BaseTestCase):
             'username': 'badname',
             'book_id': Book.objects.create(title='bar', author='baz').id,
         }
-        response = self.post(self.url.format(**kwargs))
+        response = self.client.post(self.url.format(**kwargs))
         self.assertEquals(400, response.status_code)
         self.assertEquals('Invalid username/book_id', response.json()['meta']['reason'])
 
@@ -57,6 +57,6 @@ class AddBookTestCase(BaseTestCase):
             'username': User.objects.create(username='foo').username,
             'book_id': 23,
         }
-        response = self.post(self.url.format(**kwargs))
+        response = self.client.post(self.url.format(**kwargs))
         self.assertEquals(400, response.status_code)
         self.assertEquals('Invalid username/book_id', response.json()['meta']['reason'])

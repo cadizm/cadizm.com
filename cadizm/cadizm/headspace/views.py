@@ -14,6 +14,7 @@ from cadizm.headspace.http import (
     CreateUserResponse,
     CreateBookResponse,
     AddBookResponse,
+    DeleteBookResponse,
     ErrorResponse)
 
 from cadizm.headspace.models import User, Book, Library
@@ -91,7 +92,17 @@ class AddDeleteBookView(BaseView):
             return ErrorResponse(reason=e.message)
 
     def delete(self, *args, **kwargs):
-        return HttpResponse("AddDeleteBookView")
+        try:
+            user = User.objects.get(username=kwargs['username'])
+            book = Book.objects.get(id=kwargs['book_id'])
+            library_book = Library.objects.get(user=user, book=book)
+
+            return DeleteBookResponse(library_book.delete())
+
+        except (User.DoesNotExist, Book.DoesNotExist, Library.DoesNotExist) as e:
+            return ErrorResponse(reason='Invalid username/book_id/library book')
+        except ValidationError as e:
+            return ErrorResponse(reason=e.message)
 
 
 class MarkBookReadView(BaseView):
