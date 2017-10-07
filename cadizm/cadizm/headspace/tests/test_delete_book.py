@@ -7,8 +7,8 @@ from cadizm.headspace.tests import BaseTestCase
 
 class DeleteBookTestCase(BaseTestCase):
     def setUp(self, *args, **kwargs):
-        self.url = '/headspace/users/{username}/books/{book_id}/'
         super(DeleteBookTestCase, self).setUp(*args, **kwargs)
+        self.url = '/headspace/users/{username}/books/{book_id}/'
 
     def test_valid_book_deleted(self):
         user = User.objects.create(username='foo')

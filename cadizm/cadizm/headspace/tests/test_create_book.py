@@ -7,8 +7,8 @@ from cadizm.headspace.tests import BaseTestCase
 
 class CreateBookTestCase(BaseTestCase):
     def setUp(self, *args, **kwargs):
-        self.url = '/headspace/books/'
         super(CreateBookTestCase, self).setUp(*args, **kwargs)
+        self.url = '/headspace/books/'
 
     def test_valid_title_author(self):
         self.assertEquals(0, Book.objects.count())

@@ -15,6 +15,8 @@ from cadizm.headspace.http import (
     CreateBookResponse,
     AddBookResponse,
     DeleteBookResponse,
+    MarkBookReadResponse,
+    MarkBookUnreadResponse,
     ErrorResponse)
 
 from cadizm.headspace.models import User, Book, Library
@@ -109,11 +111,35 @@ class MarkBookReadView(BaseView):
     methods = ['PUT']
 
     def put(self, *args, **kwargs):
-        return HttpResponse("MarkBookReadView")
+        try:
+            user = User.objects.get(username=kwargs['username'])
+            book = Book.objects.get(id=kwargs['book_id'])
+            library_book = Library.objects.get(user=user, book=book)
+            library_book.read = True
+            library_book.save()
+
+            return MarkBookReadResponse()
+
+        except (User.DoesNotExist, Book.DoesNotExist, Library.DoesNotExist) as e:
+            return ErrorResponse(reason='Invalid username/book_id/library book')
+        except ValidationError as e:
+            return ErrorResponse(reason=e.message)
 
 
 class MarkBookUnreadView(BaseView):
     methods = ['PUT']
 
     def put(self, *args, **kwargs):
-        return HttpResponse("MarkBookUnreadView")
+        try:
+            user = User.objects.get(username=kwargs['username'])
+            book = Book.objects.get(id=kwargs['book_id'])
+            library_book = Library.objects.get(user=user, book=book)
+            library_book.read = False
+            library_book.save()
+
+            return MarkBookUnreadResponse()
+
+        except (User.DoesNotExist, Book.DoesNotExist, Library.DoesNotExist) as e:
+            return ErrorResponse(reason='Invalid username/book_id/library book')
+        except ValidationError as e:
+            return ErrorResponse(reason=e.message)

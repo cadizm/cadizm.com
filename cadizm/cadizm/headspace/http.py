@@ -22,7 +22,7 @@ class BaseResponse(JsonResponse):
 
     @cached_property
     def result(self):
-        raise NotImplementedError
+        raise NotImplementedError()
 
     def meta(self):
         meta = dict(status=self.status_code)
@@ -95,6 +95,26 @@ class DeleteBookResponse(BaseResponse):
     def __init__(self, (n, d), *args, **kwargs):
         kwargs.update(status=200)
         super(DeleteBookResponse, self).__init__(*args, **kwargs)
+
+    @cached_property
+    def result(self):
+        pass
+
+
+class MarkBookReadResponse(BaseResponse):
+    def __init__(self, *args, **kwargs):
+        kwargs.update(status=200)
+        super(MarkBookReadResponse, self).__init__(*args, **kwargs)
+
+    @cached_property
+    def result(self):
+        pass
+
+
+class MarkBookUnreadResponse(BaseResponse):
+    def __init__(self, *args, **kwargs):
+        kwargs.update(status=200)
+        super(MarkBookUnreadResponse, self).__init__(*args, **kwargs)
 
     @cached_property
     def result(self):
