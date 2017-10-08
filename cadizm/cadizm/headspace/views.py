@@ -7,9 +7,6 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponseNotAllowed
 from django.views.generic.base import View
 
-# TODO: remove me
-from django.http import HttpResponse
-
 from cadizm.headspace.http import (
     CreateUserResponse,
     CreateBookResponse,
@@ -17,6 +14,7 @@ from cadizm.headspace.http import (
     DeleteBookResponse,
     MarkBookReadResponse,
     MarkBookUnreadResponse,
+    ListBooksResponse,
     ErrorResponse)
 
 from cadizm.headspace.models import User, Book, Library
@@ -69,13 +67,6 @@ class CreateBookView(BaseView):
 
         except ValidationError as e:
             return ErrorResponse(reason=e.message)
-
-
-class ListBooksView(BaseView):
-    methods = ['GET']
-
-    def get(self, *args, **kwargs):
-        return HttpResponse("ListBooksView")
 
 
 class AddDeleteBookView(BaseView):
@@ -141,5 +132,25 @@ class MarkBookUnreadView(BaseView):
 
         except (User.DoesNotExist, Book.DoesNotExist, Library.DoesNotExist) as e:
             return ErrorResponse(reason='Invalid username/book_id/library book')
+        except ValidationError as e:
+            return ErrorResponse(reason=e.message)
+
+
+class ListBooksView(BaseView):
+    methods = ['GET']
+
+    def get(self, *args, **kwargs):
+        try:
+            kwargs = dict(user=User.objects.get(username=kwargs['username']))
+            if 'read' in self.request.GET:
+                kwargs.update(read=self.request.GET['read'])
+            if 'author' in self.request.GET:
+                kwargs.update(book__author__icontains=self.request.GET['author'])
+            library_books = Library.objects.filter(**kwargs)
+
+            return ListBooksResponse(library_books)
+
+        except User.DoesNotExist as e:
+            return ErrorResponse(reason='Invalid username')
         except ValidationError as e:
             return ErrorResponse(reason=e.message)
