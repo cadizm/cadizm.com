@@ -1,3 +1,82 @@
+Source Code
+===========
+
+The source for the Headspace Library API can be found on [GitHub](https://github.com/cadizm/cadizm/tree/master/cadizm/cadizm/headspace).
+In addition, the main pull request for the API can be found [here](https://github.com/cadizm/cadizm/pull/2).
+
+How To Run
+==========
+
+The Library API may be tested at [https://cadizm.com/headspace/](https://cadizm.com/headspace/)
+
+Since the master branch is configured to deploy to a production setup, it takes a litle bit of
+work to run locally. If you are interested in running the code locally, you can [email](mailto:mike@cadizm.com)
+me and I'll write up some docs and create a branch to that makes running locally fairly easy.
+
+Sample Requests
+===============
+
+```
+# Create a User
+curl -X POST \
+  https://cadizm.com/headspace/users/ \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -d '{
+    "username": "jumanji",
+    "book_ids": [
+        17,
+        2,
+        137,
+        42
+    ]
+}'
+
+# Create a Book
+curl -X POST \
+  https://cadizm.com/headspace/books/ \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -d '{
+    "title": "Travels",
+    "author": "Michael Crichton"
+}'
+
+# Add a Book as Unread to a User's Library
+curl -X POST \
+  https://cadizm.com/headspace/users/jumanji/books/1/ \
+  -H 'cache-control: no-cache'
+
+# Mark a User's Book as Read
+curl -X PUT \
+  https://cadizm.com/headspace/users/jumanji/books/1/read/ \
+  -H 'cache-control: no-cache'
+
+# Mark a User's Book as Unread
+curl -X PUT \
+  https://cadizm.com/headspace/users/jumanji/books/1/unread/ \
+  -H 'cache-control: no-cache'
+
+# Delete a Book from a User's Library
+curl -X DELETE \
+  https://cadizm.com/headspace/users/jumanji/books/1/ \
+  -H 'cache-control: no-cache'
+
+# List all Users
+curl -X GET \
+  https://cadizm.com/headspace/users/ \
+  -H 'cache-control: no-cache'
+
+# List all Books
+curl -X GET \
+  https://cadizm.com/headspace/books/ \
+  -H 'cache-control: no-cache'
+
+# List all Books in a User's Library
+curl -X GET \
+  https://cadizm.com/headspace/users/jumanji/books/ \
+  -H 'cache-control: no-cache'
+```
 
 Create a User
 =============
