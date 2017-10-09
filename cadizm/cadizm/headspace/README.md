@@ -11,7 +11,7 @@ The Library API may be tested at [https://cadizm.com/headspace/](https://cadizm.
 
 Since the master branch is configured to deploy to a production setup, it takes a litle bit of
 work to run locally. If you are interested in running the code locally, you can [email](mailto:mike@cadizm.com)
-me and I'll write up some docs and create a branch to that makes running locally fairly easy.
+me and I'll write up some docs and create a branch that makes running locally fairly easy.
 
 Sample Requests
 ===============
