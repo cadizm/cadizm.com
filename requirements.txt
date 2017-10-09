@@ -7,3 +7,4 @@ requests==2.13.0
 stripe==1.65.1
 Faker==0.8.4
 stringcase==1.2.0
+inflection==0.3.1

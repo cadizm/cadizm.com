@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'cadizm.about',
     'cadizm.instagram',
     'cadizm.tees',
+    'cadizm.headspace',
 ]
 
 if DEBUG:
