@@ -33,18 +33,18 @@ class MarkBookReadTestCase(BaseTestCase):
     def test_invalid_username(self):
         response = self.client.put(self.url.format(username='badusername', book_id=self.book.id))
         self.assertEquals(400, response.status_code)
-        self.assertEquals('Invalid username/book_id/library book', response.json()['meta']['reason'])
+        self.assertEquals('Invalid username/book_id', response.json()['meta']['reason'])
 
     def test_invalid_book_id(self):
         response = self.client.put(self.url.format(username=self.user.username, book_id=712))
         self.assertEquals(400, response.status_code)
-        self.assertEquals('Invalid username/book_id/library book', response.json()['meta']['reason'])
+        self.assertEquals('Invalid username/book_id', response.json()['meta']['reason'])
 
     def test_invalid_library_book(self):
         self.library_book.delete()
         response = self.client.put(self.url.format(username=self.user.username, book_id=self.book.id))
         self.assertEquals(400, response.status_code)
-        self.assertEquals('Invalid username/book_id/library book', response.json()['meta']['reason'])
+        self.assertEquals('Invalid username/book_id', response.json()['meta']['reason'])
 
 
 class MarkBookUnreadTestCase(BaseTestCase):
@@ -75,15 +75,15 @@ class MarkBookUnreadTestCase(BaseTestCase):
     def test_invalid_username(self):
         response = self.client.put(self.url.format(username='badusername', book_id=self.book.id))
         self.assertEquals(400, response.status_code)
-        self.assertEquals('Invalid username/book_id/library book', response.json()['meta']['reason'])
+        self.assertEquals('Invalid username/book_id', response.json()['meta']['reason'])
 
     def test_invalid_book_id(self):
         response = self.client.put(self.url.format(username=self.user.username, book_id=712))
         self.assertEquals(400, response.status_code)
-        self.assertEquals('Invalid username/book_id/library book', response.json()['meta']['reason'])
+        self.assertEquals('Invalid username/book_id', response.json()['meta']['reason'])
 
     def test_invalid_library_book(self):
         self.library_book.delete()
         response = self.client.put(self.url.format(username=self.user.username, book_id=self.book.id))
         self.assertEquals(400, response.status_code)
-        self.assertEquals('Invalid username/book_id/library book', response.json()['meta']['reason'])
+        self.assertEquals('Invalid username/book_id', response.json()['meta']['reason'])

@@ -14,7 +14,7 @@ Sample request body:
 
 ```
 {
-    "username", "jumanji",
+    "username": "jumanji",
     "book_ids": [
         17,
         2,
@@ -38,27 +38,59 @@ Sample response bodies:
 
 ```
 {
-    "result": {
-        "username": "batman",
-        "book_ids" : [2, 17, 42],
-        "invalid_book_ids" : [137]
-    },
     "meta": {
         "status": 201
+    },
+    "result": {
+        "username": "jumanji",
+        "invalid_book_ids": [
+            17,
+            2,
+            42,
+            137
+        ]
     }
 }
 
 {
     "meta": {
         "status": 400,
-        "reason": "username jumanji already exists with user_id 22"
+        "reason": "Username already exists"
     }
 }
 
 {
     "meta": {
         "status": 400,
-        "reason": "bad JSON"
+        "reason": "Invalid JSON body"
+    }
+}
+```
+
+List all Users
+==============
+
+```
+GET /headspace/users/
+```
+
+Returns:
+  - 200 On success
+  - 405 Method Not Allowed on bad HTTP method
+
+Sample response bodies:
+
+```
+{
+    "meta": {
+        "status": 200
+    },
+    "result": {
+        "users": [
+            {
+                "username": "jumanji"
+            }
+        ]
     }
 }
 ```
@@ -97,27 +129,57 @@ Sample response bodies:
 
 ```
 {
-    "result": {
-        "title": "Travels",
-        "author": "Michael Crichton",
-        "book_id" : 2
-    },
     "meta": {
         "status": 201
+    },
+    "result": {
+        "author": "Michael Crichton",
+        "book_id": 4,
+        "title": "Travels"
     }
 }
 
 {
     "meta": {
         "status": 400,
-        "reason": "The Hitchhiker's Guide to the Galaxy by Douglas Adams already exists with book_id 42"
+        "reason": "Book already exists"
     }
 }
 
 {
     "meta": {
         "status": 400,
-        "reason": "bad JSON"
+        "reason": "Invalid JSON body"
+    }
+}
+```
+
+List all Books
+==============
+
+```
+GET /headspace/books/
+```
+
+Returns:
+  - 200 On success
+  - 405 Method Not Allowed on bad HTTP method
+
+Sample response bodies:
+
+```
+{
+    "meta": {
+        "status": 200
+    },
+    "result": {
+        "books": [
+            {
+                "author": "Michael Crichton",
+                "book_id": 4,
+                "title": "Travels"
+            }
+        ]
     }
 }
 ```
@@ -135,6 +197,7 @@ invalid, a response with status 400 is returned with `reason` indicating why.
 
 Returns:
   - 201 Created on successful addition of book to user library
+  - 400 Bad Request on book already added
   - 400 Bad Request on invalid `username` or `book_id`
   - 405 Method Not Allowed on bad HTTP method
 
@@ -154,7 +217,14 @@ Sample response bodies:
 {
     "meta": {
         "status": 400,
-        "reason": "bad book_id 137"
+        "reason": "Book already added"
+    }
+}
+
+{
+    "meta": {
+        "status": 400,
+        "reason": "Invalid username/book_id"
     }
 }
 ```
@@ -192,7 +262,7 @@ Sample response bodies:
 {
     "meta": {
         "status": 400,
-        "reason": "bad username robin"
+        "reason": "Invalid username/book_id"
     }
 }
 ```
@@ -229,7 +299,7 @@ Sample response bodies:
 {
     "meta": {
         "status": 400,
-        "reason": "bad book_id 137"
+        "reason": "Invalid username/book_id"
     }
 }
 ```
@@ -267,29 +337,24 @@ Sample response bodies:
 
 ```
 {
-    "result": {
-        "books" : [
-            {
-                "book_id": 42,
-                "title": "The Hitchhiker's Guide to the Galaxy",
-                "author": "Douglas Adams",
-            },
-            {
-                "book_id": 2,
-                "title": "Travels",
-                "author": "Michael Crichton"
-            }
-        ]
-    },
     "meta": {
         "status": 200
+    },
+    "result": {
+        "books": [
+            {
+                "author": "Michael Crichton",
+                "book_id": 4,
+                "title": "Travels"
+            }
+        ]
     }
 }
 
 {
     "meta": {
-        "status": 400,
-        "reason": "username robin not found"
+        "reason": "Invalid username",
+        "status": 400
     }
 }
 ```

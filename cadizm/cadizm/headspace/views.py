@@ -14,7 +14,9 @@ from cadizm.headspace.http import (
     DeleteBookResponse,
     MarkBookReadResponse,
     MarkBookUnreadResponse,
+    ListUsersResponse,
     ListBooksResponse,
+    ListLibraryResponse,
     ErrorResponse)
 
 from cadizm.headspace.models import User, Book, Library
@@ -37,8 +39,11 @@ class BaseView(View):
         return super(BaseView, self).dispatch(*args, **kwargs)
 
 
-class CreateUserView(BaseView):
-    methods = ['POST']
+class UserView(BaseView):
+    methods = ['GET', 'POST']
+
+    def get(self, *args, **kwargs):
+        return ListUsersResponse(User.objects.all())
 
     def post(self, *args, **kwargs):
         try:
@@ -53,8 +58,11 @@ class CreateUserView(BaseView):
             return ErrorResponse(reason=e.message)
 
 
-class CreateBookView(BaseView):
-    methods = ['POST']
+class BookView(BaseView):
+    methods = ['GET', 'POST']
+
+    def get(self, *args, **kwargs):
+        return ListBooksResponse(Book.objects.all())
 
     def post(self, *args, **kwargs):
         try:
@@ -93,7 +101,7 @@ class AddDeleteBookView(BaseView):
             return DeleteBookResponse(library_book.delete())
 
         except (User.DoesNotExist, Book.DoesNotExist, Library.DoesNotExist) as e:
-            return ErrorResponse(reason='Invalid username/book_id/library book')
+            return ErrorResponse(reason='Invalid username/book_id')
         except ValidationError as e:
             return ErrorResponse(reason=e.message)
 
@@ -112,7 +120,7 @@ class MarkBookReadView(BaseView):
             return MarkBookReadResponse()
 
         except (User.DoesNotExist, Book.DoesNotExist, Library.DoesNotExist) as e:
-            return ErrorResponse(reason='Invalid username/book_id/library book')
+            return ErrorResponse(reason='Invalid username/book_id')
         except ValidationError as e:
             return ErrorResponse(reason=e.message)
 
@@ -131,12 +139,12 @@ class MarkBookUnreadView(BaseView):
             return MarkBookUnreadResponse()
 
         except (User.DoesNotExist, Book.DoesNotExist, Library.DoesNotExist) as e:
-            return ErrorResponse(reason='Invalid username/book_id/library book')
+            return ErrorResponse(reason='Invalid username/book_id')
         except ValidationError as e:
             return ErrorResponse(reason=e.message)
 
 
-class ListBooksView(BaseView):
+class ListLibraryView(BaseView):
     methods = ['GET']
 
     def get(self, *args, **kwargs):
@@ -146,9 +154,8 @@ class ListBooksView(BaseView):
                 kwargs.update(read=self.request.GET['read'])
             if 'author' in self.request.GET:
                 kwargs.update(book__author__icontains=self.request.GET['author'])
-            library_books = Library.objects.filter(**kwargs)
 
-            return ListBooksResponse(library_books)
+            return ListLibraryResponse(Library.objects.filter(**kwargs))
 
         except User.DoesNotExist as e:
             return ErrorResponse(reason='Invalid username')

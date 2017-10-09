@@ -121,17 +121,47 @@ class MarkBookUnreadResponse(BaseResponse):
         pass
 
 
+class ListUsersResponse(BaseResponse):
+    def __init__(self, users, *args, **kwargs):
+        kwargs.update(status=200)
+        self.users = users
+        super(ListUsersResponse, self).__init__(*args, **kwargs)
+
+    @cached_property
+    def result(self):
+        result = dict(users=[])
+        for user in self.users:
+            result['users'].append(dict(username=user.username))
+
+        return result
+
+
 class ListBooksResponse(BaseResponse):
+    def __init__(self, books, *args, **kwargs):
+        kwargs.update(status=200)
+        self.books = books
+        super(ListBooksResponse, self).__init__(*args, **kwargs)
+
+    @cached_property
+    def result(self):
+        result = dict(books=[])
+        for book in self.books:
+            result['books'].append(dict(book_id=book.id, title=book.title, author=book.author))
+
+        return result
+
+
+class ListLibraryResponse(BaseResponse):
     def __init__(self, library_books, *args, **kwargs):
         kwargs.update(status=200)
         self.library_books = library_books
-        super(ListBooksResponse, self).__init__(*args, **kwargs)
+        super(ListLibraryResponse, self).__init__(*args, **kwargs)
 
     @cached_property
     def result(self):
         result = dict(books=[])
         for library_book in self.library_books:
             book = library_book.book
-            result['books'].append(dict(book_id=book.id, title=book.title, author=book.author))
+            result['books'].append(dict(book_id=book.id, title=book.title, author=book.author, read=library_book.read))
 
         return result

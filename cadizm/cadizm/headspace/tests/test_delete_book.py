@@ -35,7 +35,7 @@ class DeleteBookTestCase(BaseTestCase):
         }
         response = self.client.delete(self.url.format(**kwargs))
         self.assertEquals(400, response.status_code)
-        self.assertEquals('Invalid username/book_id/library book', response.json()['meta']['reason'])
+        self.assertEquals('Invalid username/book_id', response.json()['meta']['reason'])
 
     def test_delete_twice(self):
         user = User.objects.create(username='foo')
@@ -53,7 +53,7 @@ class DeleteBookTestCase(BaseTestCase):
 
         response = self.client.delete(self.url.format(**kwargs))
         self.assertEquals(400, response.status_code)
-        self.assertEquals('Invalid username/book_id/library book', response.json()['meta']['reason'])
+        self.assertEquals('Invalid username/book_id', response.json()['meta']['reason'])
 
     def test_invalid_username(self):
         kwargs = {
@@ -62,7 +62,7 @@ class DeleteBookTestCase(BaseTestCase):
         }
         response = self.client.delete(self.url.format(**kwargs))
         self.assertEquals(400, response.status_code)
-        self.assertEquals('Invalid username/book_id/library book', response.json()['meta']['reason'])
+        self.assertEquals('Invalid username/book_id', response.json()['meta']['reason'])
 
     def test_invalid_book_id(self):
         kwargs = {
@@ -71,4 +71,4 @@ class DeleteBookTestCase(BaseTestCase):
         }
         response = self.client.delete(self.url.format(**kwargs))
         self.assertEquals(400, response.status_code)
-        self.assertEquals('Invalid username/book_id/library book', response.json()['meta']['reason'])
+        self.assertEquals('Invalid username/book_id', response.json()['meta']['reason'])

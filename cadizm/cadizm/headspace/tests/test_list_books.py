@@ -86,7 +86,7 @@ class ListBooksTestCase(BaseTestCase):
                 continue  # single letter still matches
             author = list(author)  # split string into list of char
             random.shuffle(author)  # in-place jumble
-            author = ''.join(author) + random.choice(string.letters)  # back to string plus random
+            author = ''.join(author) + random.choice(string.digits)  # back to string plus random
             response = self.client.get(self.url.format(self.url), {'author': author})
             self.assertEqual(200, response.status_code)
             self.assertEqual(0, len(response.json()['result']['books']))
