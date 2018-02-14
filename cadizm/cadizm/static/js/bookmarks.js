@@ -16,6 +16,7 @@ var Bookmarks = {
         var mapOptions = {
             center: new google.maps.LatLng(34.0486859, -118.2422464),
             zoom: 14,
+            mapTypeControl: false
         };
 
         Bookmarks.map = new google.maps.Map(document.getElementById("map-canvas"),
