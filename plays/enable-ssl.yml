@@ -61,7 +61,8 @@
       cron:
         minute: 33
         hour: 2,14
-        job: letsencrypt renew --agree-tos && service nginx restart
+        day: 15
+        job: letsencrypt renew --force-renew --agree-tos && service nginx restart
 
     - name: Reload nginx
       service: name=nginx state=reloaded
