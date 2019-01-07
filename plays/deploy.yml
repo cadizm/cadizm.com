@@ -31,8 +31,5 @@
     - name: Restart cadizm service
       service: name=cadizm state=restarted
 
-    - name: Restart roysciclisimo service
-      service: name=roysciclisimo state=restarted
-
     - name: Restart scramble service
       service: name=scramble state=restarted

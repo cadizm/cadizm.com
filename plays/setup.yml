@@ -22,12 +22,6 @@
         dest: /etc/nginx/sites-enabled
       notify: Reload nginx
 
-    - name: Copy roysciclisimo nginx conf
-      copy:
-        src: "{{playbook_dir}}/roysciclisimo.conf"
-        dest: /etc/nginx/sites-enabled
-      notify: Reload nginx
-
     - name: Copy nickamores nginx conf
       copy:
         src: "{{playbook_dir}}/nickamores.conf"
@@ -48,15 +42,6 @@
       notify:
         - Enable cadizm service
         - Reload cadizm service
-
-    - name: Copy roysciclisimo systemd conf
-      copy:
-        src: "{{playbook_dir}}/roysciclisimo.service"
-        dest: /etc/systemd/system
-        mode: 755
-      notify:
-        - Enable roysciclisimo service
-        - Reload roysciclisimo service
 
     - name: Copy scramble systemd conf
       copy:
@@ -106,14 +91,6 @@
           true
         fi
 
-    - name: Make roysciclisimo virtualenv
-      shell: >
-        if [[ ! -d /opt/virtualenvs/roysciclisimo ]]; then
-          virtualenv /opt/virtualenvs/roysciclisimo
-        else
-          true
-        fi
-
     - name: Make scramble virtualenv
       shell: >
         if [[ ! -d /opt/virtualenvs/scramble ]]; then
@@ -126,11 +103,6 @@
       pip:
         requirements: /opt/cadizm/requirements.txt
         virtualenv: /opt/virtualenvs/cadizm
-
-    - name: Install roysciclisimo requrements
-      pip:
-        requirements: /opt/cadizm/lib/roys-ciclisimo/requirements/base.txt
-        virtualenv: /opt/virtualenvs/roysciclisimo
 
     - name: Install scramble requrements
       pip:
@@ -158,9 +130,6 @@
     - name: Restart scramble service
       service: name=scramble state=restarted
 
-    - name: Restart roysciclisimo service
-      service: name=roysciclisimo state=restarted
-
     - name: Restart nginx service
       service: name=nginx state=restarted
 
@@ -178,12 +147,6 @@
       service: name=scramble enabled=yes
 
     - name: Reload scramble service
-      command: systemctl daemon-reload
-
-    - name: Enable roysciclisimo service
-      service: name=roysciclisimo enabled=yes
-
-    - name: Reload roysciclisimo service
       command: systemctl daemon-reload
 
     - name: Copy cadizm secrets
