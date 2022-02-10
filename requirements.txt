@@ -1,4 +1,4 @@
-Django==2.2.24
+Django==2.2.27
 Jinja2==2.11.3
 gunicorn==19.6.0
 pyaml==16.9.0
